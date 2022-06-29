@@ -6,6 +6,6 @@
 
 update:; forge update
 build  :; forge build
-test   :; forge test -vvv --rpc-url=${RPC_URL}
+test   :; forge test -vvv --rpc-url=${RPC_URL} --fork-block-number 15045200
 clean  :; forge clean
 snapshot :; forge snapshot

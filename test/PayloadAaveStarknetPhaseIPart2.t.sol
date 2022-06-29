@@ -47,8 +47,8 @@ contract PayloadAaveStarknetPhaseIPart2Test is Test {
     );
 
     require(
-      balanceRecipientUsdcBefore ==
-        balanceRecipientUsdcAfter + payload.USDC_AMOUNT(),
+      balanceRecipientUsdcAfter ==
+        balanceRecipientUsdcBefore + payload.USDC_AMOUNT(),
       'INVALID_FUNDS_RECEIVED'
     );
   }

@@ -2,7 +2,7 @@
 pragma solidity >=0.7.5 <0.9.0;
 pragma abicoder v2;
 
-import "forge-std/Vm.sol";
+import 'forge-std/Vm.sol';
 
 interface IAaveGov {
   struct ProposalWithoutVotes {
@@ -110,7 +110,11 @@ library GovHelpers {
     return proposalId;
   }
 
-  function _getProposalSlot(uint256 proposalId) private pure returns (bytes32 slot) {
+  function _getProposalSlot(uint256 proposalId)
+    private
+    pure
+    returns (bytes32 slot)
+  {
     uint256 proposalsMapSlot = 0x4;
     return
       bytes32(
@@ -122,14 +126,13 @@ library GovHelpers {
    * Alter storage slots so the proposal passes
    */
   function passVoteAndExecute(Vm vm, uint256 proposalId) internal {
-    IAaveGov.ProposalWithoutVotes memory proposal = getProposalById(proposalId);
     uint256 power = 5000000 ether;
     vm.roll(block.number + 1);
     vm.store(address(GOV), _getProposalSlot(proposalId), bytes32(power));
-    uint256 endBlock = proposal.endBlock;
+    uint256 endBlock = GOV.getProposalById(proposalId).endBlock;
     vm.roll(endBlock + 1);
     GOV.queue(proposalId);
-    uint256 executionTime = proposal.executionTime;
+    uint256 executionTime = GOV.getProposalById(proposalId).executionTime;
     vm.warp(executionTime + 1);
     GOV.execute(proposalId);
   }
